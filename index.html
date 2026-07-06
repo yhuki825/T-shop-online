@@ -1,0 +1,854 @@
+<!DOCTYPE html>
+<html lang="ja" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>T shop online | 豊かな暮らしを届けるECパートナー</title>
+
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400&family=Noto+Sans+JP:wght@300;400;500;700&display=swap" rel="stylesheet">
+
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        gold: {
+                            50:  '#fdf9f0',
+                            100: '#f7edcf',
+                            200: '#edd99a',
+                            300: '#e0c06a',
+                            400: '#d4a843',
+                            500: '#c8922a',
+                            600: '#b07820',
+                            700: '#8c5e18',
+                            800: '#6a4512',
+                            900: '#3e280a',
+                        },
+                        ink: {
+                            50:  '#f8f8f6',
+                            100: '#ededea',
+                            200: '#d5d5cf',
+                            300: '#b0b0a6',
+                            400: '#888878',
+                            500: '#666658',
+                            600: '#4e4e42',
+                            700: '#3a3a30',
+                            800: '#252520',
+                            900: '#141410',
+                        }
+                    },
+                    fontFamily: {
+                        serif: ['"Cormorant Garamond"', 'Georgia', 'serif'],
+                        sans:  ['"Noto Sans JP"', 'Helvetica Neue', 'Arial', 'sans-serif'],
+                    },
+                    letterSpacing: {
+                        widest2: '0.25em',
+                    }
+                }
+            }
+        }
+    </script>
+
+    <!-- Lucide Icons -->
+    <script src="https://unpkg.com/lucide@latest"></script>
+
+    <style>
+        /* ===== Base ===== */
+        html { font-size: 16px; }
+
+        /* ===== Scroll Animations ===== */
+        .reveal {
+            opacity: 0;
+            transform: translateY(32px);
+            transition: opacity 0.9s cubic-bezier(0.22, 1, 0.36, 1),
+                        transform 0.9s cubic-bezier(0.22, 1, 0.36, 1);
+        }
+        .reveal.visible { opacity: 1; transform: translateY(0); }
+        .reveal-delay-1 { transition-delay: 0.1s; }
+        .reveal-delay-2 { transition-delay: 0.2s; }
+        .reveal-delay-3 { transition-delay: 0.3s; }
+        .reveal-delay-4 { transition-delay: 0.4s; }
+        .reveal-delay-5 { transition-delay: 0.5s; }
+
+        /* ===== Header ===== */
+        #main-header {
+            transition: background 0.4s ease, box-shadow 0.4s ease;
+        }
+        #main-header.scrolled {
+            background: rgba(255,255,255,0.97);
+            box-shadow: 0 1px 24px rgba(0,0,0,0.08);
+        }
+
+        /* ===== Hero ===== */
+        .hero-bg {
+            background-image: url('https://images.unsplash.com/photo-1511556532299-8f662fc26c06?auto=format&fit=crop&w=1920&q=80');
+            background-size: cover;
+            background-position: center;
+        }
+        .hero-overlay {
+            background: linear-gradient(
+                160deg,
+                rgba(20,20,16,0.82) 0%,
+                rgba(20,20,16,0.60) 50%,
+                rgba(62,40,10,0.70) 100%
+            );
+        }
+
+        /* ===== Gold Gradient Text ===== */
+        .text-gold-gradient {
+            background: linear-gradient(135deg, #e0c06a 0%, #c8922a 50%, #e0c06a 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        /* ===== Section Label ===== */
+        .section-label {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.6rem;
+            font-family: 'Cormorant Garamond', Georgia, serif;
+            font-size: 0.75rem;
+            font-weight: 600;
+            letter-spacing: 0.22em;
+            text-transform: uppercase;
+            color: #b07820;
+        }
+        .section-label::before {
+            content: '';
+            display: block;
+            width: 2rem;
+            height: 1px;
+            background: #b07820;
+        }
+
+        /* ===== Category Card ===== */
+        .cat-card {
+            position: relative;
+            overflow: hidden;
+            border-radius: 1rem;
+            background: #fff;
+            transition: transform 0.45s cubic-bezier(0.22, 1, 0.36, 1),
+                        box-shadow 0.45s cubic-bezier(0.22, 1, 0.36, 1);
+        }
+        .cat-card:hover {
+            transform: translateY(-6px);
+            box-shadow: 0 24px 48px rgba(0,0,0,0.12);
+        }
+        .cat-card img {
+            transition: transform 0.7s cubic-bezier(0.22, 1, 0.36, 1);
+        }
+        .cat-card:hover img { transform: scale(1.07); }
+
+        /* ===== Strength Item ===== */
+        .strength-item {
+            position: relative;
+            padding: 2rem 2rem 2rem 5rem;
+            background: #fff;
+            border-radius: 1rem;
+            border: 1px solid #ededea;
+            transition: box-shadow 0.3s ease, border-color 0.3s ease;
+        }
+        .strength-item:hover {
+            box-shadow: 0 12px 32px rgba(0,0,0,0.08);
+            border-color: #e0c06a;
+        }
+        .strength-num {
+            position: absolute;
+            top: 1.75rem;
+            left: 1.75rem;
+            font-family: 'Cormorant Garamond', Georgia, serif;
+            font-size: 1.5rem;
+            font-weight: 600;
+            color: #d4a843;
+            line-height: 1;
+        }
+
+        /* ===== Profile Table ===== */
+        .profile-row {
+            display: grid;
+            grid-template-columns: 8rem 1fr;
+            gap: 1rem 2rem;
+            padding: 1.5rem 0;
+            border-bottom: 1px solid #ededea;
+            align-items: start;
+        }
+        .profile-row:last-child { border-bottom: none; }
+        @media (max-width: 640px) {
+            .profile-row { grid-template-columns: 1fr; gap: 0.4rem; }
+        }
+
+        /* ===== Scroll Indicator ===== */
+        @keyframes scrollDown {
+            0%   { transform: translateY(0); opacity: 1; }
+            80%  { transform: translateY(10px); opacity: 0; }
+            81%  { transform: translateY(-4px); opacity: 0; }
+            100% { transform: translateY(0); opacity: 1; }
+        }
+        .scroll-dot { animation: scrollDown 2s ease infinite; }
+
+        /* ===== Mobile Menu ===== */
+        #mobile-menu {
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.4s cubic-bezier(0.22, 1, 0.36, 1);
+        }
+        #mobile-menu.open { max-height: 320px; }
+
+        /* ===== Decorative Divider ===== */
+        .ornament {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            justify-content: center;
+        }
+        .ornament::before,
+        .ornament::after {
+            content: '';
+            flex: 1;
+            max-width: 4rem;
+            height: 1px;
+            background: linear-gradient(90deg, transparent, #d4a843);
+        }
+        .ornament::after {
+            background: linear-gradient(90deg, #d4a843, transparent);
+        }
+    </style>
+</head>
+
+<body class="bg-ink-50 text-ink-800 font-sans antialiased overflow-x-hidden">
+
+<!-- ============================================================
+     HEADER
+============================================================ -->
+<header id="main-header" class="fixed top-0 left-0 w-full z-50 bg-white/80 backdrop-blur-lg border-b border-ink-100">
+    <div class="max-w-7xl mx-auto px-6 h-20 flex items-center justify-between">
+
+        <!-- Logo -->
+        <a href="#" class="flex items-center gap-3 group">
+            <div class="w-10 h-10 rounded-lg bg-ink-900 flex items-center justify-center
+                        transition-transform duration-300 group-hover:scale-105">
+                <span class="font-serif text-white font-semibold text-xl leading-none">T</span>
+            </div>
+            <div class="flex flex-col leading-none">
+                <span class="font-sans font-bold tracking-widest text-ink-900 text-base">T shop online</span>
+                <span class="font-serif text-[10px] text-gold-600 tracking-widest uppercase mt-0.5">
+                    Lifestyle &amp; Hobby Curator
+                </span>
+            </div>
+        </a>
+
+        <!-- Desktop Nav -->
+        <nav class="hidden md:flex items-center gap-8">
+            <a href="#concept"    class="nav-link text-sm font-medium text-ink-600 hover:text-gold-600 transition-colors duration-200 tracking-wide">Concept</a>
+            <a href="#categories" class="nav-link text-sm font-medium text-ink-600 hover:text-gold-600 transition-colors duration-200 tracking-wide">Categories</a>
+            <a href="#strengths"  class="nav-link text-sm font-medium text-ink-600 hover:text-gold-600 transition-colors duration-200 tracking-wide">Strengths</a>
+            <a href="#profile"    class="nav-link text-sm font-medium text-ink-600 hover:text-gold-600 transition-colors duration-200 tracking-wide">Profile</a>
+        </nav>
+
+        <!-- Mobile Toggle -->
+        <button id="mobile-menu-btn" class="md:hidden p-2 text-ink-700 hover:text-gold-600 transition-colors" aria-label="メニューを開く">
+            <i data-lucide="menu" class="w-6 h-6"></i>
+        </button>
+    </div>
+
+    <!-- Mobile Menu -->
+    <div id="mobile-menu" class="md:hidden bg-white border-t border-ink-100 px-6 space-y-1">
+        <a href="#concept"    class="block py-3 text-sm font-medium text-ink-700 hover:text-gold-600 transition-colors border-b border-ink-100/60">Concept</a>
+        <a href="#categories" class="block py-3 text-sm font-medium text-ink-700 hover:text-gold-600 transition-colors border-b border-ink-100/60">Categories</a>
+        <a href="#strengths"  class="block py-3 text-sm font-medium text-ink-700 hover:text-gold-600 transition-colors border-b border-ink-100/60">Strengths</a>
+        <a href="#profile"    class="block py-3 text-sm font-medium text-ink-700 hover:text-gold-600 transition-colors">Profile</a>
+    </div>
+</header>
+
+
+<!-- ============================================================
+     HERO
+============================================================ -->
+<section class="relative min-h-screen flex items-center justify-center overflow-hidden hero-bg">
+    <div class="absolute inset-0 hero-overlay"></div>
+
+    <!-- Decorative blobs -->
+    <div class="absolute top-1/4 right-0 w-[600px] h-[600px] rounded-full
+                bg-gold-400/10 blur-[120px] pointer-events-none"></div>
+    <div class="absolute bottom-0 left-0 w-[400px] h-[400px] rounded-full
+                bg-gold-700/15 blur-[100px] pointer-events-none"></div>
+
+    <div class="relative z-10 max-w-5xl mx-auto px-6 text-center text-white pt-24 pb-32">
+
+        <!-- Badge -->
+        <div class="inline-flex items-center gap-2 px-4 py-2 rounded-full
+                    bg-white/10 backdrop-blur-md border border-white/20 mb-10
+                    reveal visible">
+            <span class="w-1.5 h-1.5 rounded-full bg-gold-400"></span>
+            <span class="font-serif text-xs tracking-widest uppercase text-gold-200">
+                T shop online — Business Portfolio
+            </span>
+        </div>
+
+        <!-- Headline -->
+        <h1 class="font-serif font-light text-5xl sm:text-6xl md:text-7xl leading-[1.15] mb-8 reveal visible reveal-delay-1">
+            日常に、新しい<br>
+            <em class="not-italic text-gold-gradient">ワクワク</em>と心地よさを。
+        </h1>
+
+        <!-- Sub copy -->
+        <p class="max-w-2xl mx-auto font-sans font-light text-base sm:text-lg text-white/70 leading-relaxed mb-12 reveal visible reveal-delay-2">
+            雑貨・アパレルから、スポーツ・アウトドア用品まで。<br class="hidden sm:inline">
+            時代のニーズに応える多ジャンルの厳選アイテムをオンラインでお届けする、<br class="hidden sm:inline">
+            信頼と実績のネットショップ運営事業者です。
+        </p>
+
+        <!-- CTAs -->
+        <div class="flex flex-col sm:flex-row items-center justify-center gap-4 reveal visible reveal-delay-3">
+            <a href="#categories"
+               class="w-full sm:w-auto px-8 py-4 rounded-lg font-sans font-medium text-sm tracking-wider
+                      bg-gold-500 hover:bg-gold-400 text-white
+                      shadow-lg shadow-gold-900/30
+                      transition-all duration-300 hover:-translate-y-0.5
+                      flex items-center justify-center gap-2">
+                <span>取扱カテゴリーを見る</span>
+                <i data-lucide="chevron-right" class="w-4 h-4"></i>
+            </a>
+            <a href="#concept"
+               class="w-full sm:w-auto px-8 py-4 rounded-lg font-sans font-medium text-sm tracking-wider
+                      bg-white/10 hover:bg-white/20 text-white
+                      backdrop-blur-md border border-white/20
+                      transition-all duration-300
+                      flex items-center justify-center gap-2">
+                <span>私たちのコンセプト</span>
+            </a>
+        </div>
+    </div>
+
+    <!-- Scroll Indicator -->
+    <div class="absolute bottom-10 left-1/2 -translate-x-1/2 z-10 flex flex-col items-center gap-2">
+        <span class="font-serif text-[10px] text-white/40 tracking-widest uppercase">Scroll</span>
+        <div class="w-px h-12 bg-white/20 relative overflow-hidden rounded-full">
+            <div class="scroll-dot w-full h-5 bg-gold-400 rounded-full absolute top-0"></div>
+        </div>
+    </div>
+</section>
+
+
+<!-- ============================================================
+     CONCEPT
+============================================================ -->
+<section id="concept" class="py-28 sm:py-36">
+    <div class="max-w-7xl mx-auto px-6">
+
+        <div class="grid grid-cols-1 lg:grid-cols-12 gap-16 lg:gap-24 items-center">
+
+            <!-- Left -->
+            <div class="lg:col-span-5 space-y-6 reveal">
+                <span class="section-label">01 / Concept</span>
+                <h2 class="font-serif font-light text-4xl sm:text-5xl text-ink-900 leading-[1.2]">
+                    人々の生活シーンに<br>寄り添う、<br>
+                    <em class="not-italic text-gold-600">オンラインショップ</em>のあり方。
+                </h2>
+                <div class="ornament w-32">
+                    <span class="w-1.5 h-1.5 rounded-full bg-gold-400 flex-shrink-0"></span>
+                </div>
+            </div>
+
+            <!-- Right -->
+            <div class="lg:col-span-7 space-y-7 text-ink-600 text-base sm:text-lg leading-[1.9] reveal reveal-delay-2">
+                <p>
+                    インターネットの普及により、世界中のモノが手に入る時代になりました。
+                    その一方で、「本当に自分の暮らしにフィットする良質なモノ」に出会うことは、
+                    時に容易ではありません。
+                </p>
+                <p>
+                    私たち <strong class="text-ink-900 font-medium">T shop online</strong> は、
+                    雑貨・日用品といった日々の暮らしのベースとなるアイテムから、アパレル、
+                    スポーツ・アウトドア用品、おもちゃといった余暇を最大限に彩るプロダクトまで、
+                    多岐にわたるジャンルのネットショップを運営しています。
+                </p>
+                <p>
+                    私たちの使命は、単に商品を販売することではありません。
+                    メーカー様・卸業者様の大切な製品を、「それを最も必要としているお客様」のもとへ、
+                    確かな品質管理と誠実な運営プロセスを経てお届けすること。
+                    それこそが、私たちの果たすべき役割です。
+                </p>
+            </div>
+        </div>
+
+        <!-- Value Cards -->
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mt-20">
+
+            <!-- Card 1 -->
+            <div class="reveal reveal-delay-1 group bg-white rounded-2xl p-8 border border-ink-100
+                        hover:border-gold-300 hover:shadow-xl hover:shadow-gold-500/10
+                        transition-all duration-400">
+                <div class="w-12 h-12 rounded-xl bg-gold-50 text-gold-600 flex items-center justify-center mb-6
+                            group-hover:bg-gold-500 group-hover:text-white transition-colors duration-300">
+                    <i data-lucide="check-circle" class="w-6 h-6"></i>
+                </div>
+                <h3 class="font-sans font-bold text-ink-900 text-base mb-3">確実な品質と安全性の確保</h3>
+                <p class="text-sm text-ink-500 leading-relaxed">
+                    取り扱うすべてのカテゴリーにおいて、品質管理基準を徹底。
+                    お客様へお届けする一品一品を厳しくチェックしています。
+                </p>
+            </div>
+
+            <!-- Card 2 -->
+            <div class="reveal reveal-delay-2 group bg-white rounded-2xl p-8 border border-ink-100
+                        hover:border-gold-300 hover:shadow-xl hover:shadow-gold-500/10
+                        transition-all duration-400">
+                <div class="w-12 h-12 rounded-xl bg-gold-50 text-gold-600 flex items-center justify-center mb-6
+                            group-hover:bg-gold-500 group-hover:text-white transition-colors duration-300">
+                    <i data-lucide="compass" class="w-6 h-6"></i>
+                </div>
+                <h3 class="font-sans font-bold text-ink-900 text-base mb-3">多様な生活ニーズへの迅速な対応</h3>
+                <p class="text-sm text-ink-500 leading-relaxed">
+                    アパレル、スポーツ、アウトドアから日用品まで。
+                    市場のトレンドを敏感にキャッチし、タイムリーに品揃えを拡充します。
+                </p>
+            </div>
+
+            <!-- Card 3 -->
+            <div class="reveal reveal-delay-3 group bg-white rounded-2xl p-8 border border-ink-100
+                        hover:border-gold-300 hover:shadow-xl hover:shadow-gold-500/10
+                        transition-all duration-400">
+                <div class="w-12 h-12 rounded-xl bg-gold-50 text-gold-600 flex items-center justify-center mb-6
+                            group-hover:bg-gold-500 group-hover:text-white transition-colors duration-300">
+                    <i data-lucide="users" class="w-6 h-6"></i>
+                </div>
+                <h3 class="font-sans font-bold text-ink-900 text-base mb-3">取引先・メーカー様との強固な信頼</h3>
+                <p class="text-sm text-ink-500 leading-relaxed">
+                    誠実な仕入れ活動と健全なオンライン販売ノウハウにより、
+                    プロダクトのブランド価値を守り、共に成長する関係を構築します。
+                </p>
+            </div>
+
+        </div>
+    </div>
+</section>
+
+
+<!-- ============================================================
+     CATEGORIES
+============================================================ -->
+<section id="categories" class="py-28 sm:py-36 bg-white">
+    <div class="max-w-7xl mx-auto px-6">
+
+        <!-- Header -->
+        <div class="text-center max-w-2xl mx-auto mb-20 reveal">
+            <span class="section-label justify-center mb-6">02 / Categories</span>
+            <h2 class="font-serif font-light text-4xl sm:text-5xl text-ink-900 mt-4 mb-6 leading-[1.2]">
+                取扱カテゴリー
+            </h2>
+            <div class="ornament mb-6">
+                <span class="w-1.5 h-1.5 rounded-full bg-gold-400 flex-shrink-0"></span>
+            </div>
+            <p class="font-sans text-ink-500 text-base leading-relaxed">
+                豊かな日々の基本となる日用品から、週末のアクティビティを彩る専門性の高いアイテムまで、
+                幅広い商品カテゴリをバランスよく取り揃えております。
+            </p>
+        </div>
+
+        <!-- Grid -->
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+
+            <!-- Cat 1: 雑貨・日用品 -->
+            <div class="cat-card reveal reveal-delay-1 border border-ink-100">
+                <div class="relative h-60 overflow-hidden">
+                    <img src="https://images.unsplash.com/photo-1583847268964-b28dc8f51f92?auto=format&fit=crop&w=600&q=80"
+                         alt="雑貨・日用品"
+                         class="w-full h-full object-cover"
+                         onerror="this.src='https://images.unsplash.com/photo-1513694203232-719a280e022f?auto=format&fit=crop&w=600&q=80'">
+                    <div class="absolute inset-0 bg-gradient-to-t from-ink-900/50 to-transparent"></div>
+                    <div class="absolute top-4 left-4 bg-white/90 backdrop-blur-md px-3 py-1 rounded-full
+                                text-xs font-semibold text-ink-800 flex items-center gap-1.5">
+                        <i data-lucide="home" class="w-3.5 h-3.5 text-gold-600"></i>
+                        <span>Daily Essence</span>
+                    </div>
+                </div>
+                <div class="p-7">
+                    <h3 class="font-sans font-bold text-ink-900 text-lg mb-3">雑貨・日用品</h3>
+                    <p class="text-sm text-ink-500 leading-relaxed">
+                        使うほどに愛着が湧くスタイリッシュなデザインのインテリア雑貨から、
+                        毎日の家事をサポートする高品質で機能的な消耗品、キッチングッズなどを幅広くセレクト。
+                    </p>
+                </div>
+            </div>
+
+            <!-- Cat 2: おもちゃ・ホビー -->
+            <div class="cat-card reveal reveal-delay-2 border border-ink-100">
+                <div class="relative h-60 overflow-hidden">
+                    <img src="https://images.unsplash.com/photo-1515488042361-404e9250afef?auto=format&fit=crop&w=600&q=80"
+                         alt="おもちゃ・ホビー"
+                         class="w-full h-full object-cover"
+                         onerror="this.src='https://images.unsplash.com/photo-1531525645387-7f14be1bdbbd?auto=format&fit=crop&w=600&q=80'">
+                    <div class="absolute inset-0 bg-gradient-to-t from-ink-900/50 to-transparent"></div>
+                    <div class="absolute top-4 left-4 bg-white/90 backdrop-blur-md px-3 py-1 rounded-full
+                                text-xs font-semibold text-ink-800 flex items-center gap-1.5">
+                        <i data-lucide="gamepad-2" class="w-3.5 h-3.5 text-gold-600"></i>
+                        <span>Kids &amp; Hobby</span>
+                    </div>
+                </div>
+                <div class="p-7">
+                    <h3 class="font-sans font-bold text-ink-900 text-lg mb-3">おもちゃ・ホビー</h3>
+                    <p class="text-sm text-ink-500 leading-relaxed">
+                        知育に役立つ木製玩具や知育パズルから、家族全員で楽しめるファミリーゲーム、
+                        トレンドを捉えた人気キャラクターホビーまで、子どもの笑顔を育む安心安全なプロダクト。
+                    </p>
+                </div>
+            </div>
+
+            <!-- Cat 3: スポーツ用品 -->
+            <div class="cat-card reveal reveal-delay-3 border border-ink-100">
+                <div class="relative h-60 overflow-hidden">
+                    <img src="https://images.unsplash.com/photo-1526506118085-60ce8714f8c5?auto=format&fit=crop&w=600&q=80"
+                         alt="スポーツ用品"
+                         class="w-full h-full object-cover"
+                         onerror="this.src='https://images.unsplash.com/photo-1461896836934-ffe607ba8211?auto=format&fit=crop&w=600&q=80'">
+                    <div class="absolute inset-0 bg-gradient-to-t from-ink-900/50 to-transparent"></div>
+                    <div class="absolute top-4 left-4 bg-white/90 backdrop-blur-md px-3 py-1 rounded-full
+                                text-xs font-semibold text-ink-800 flex items-center gap-1.5">
+                        <i data-lucide="activity" class="w-3.5 h-3.5 text-gold-600"></i>
+                        <span>Active Fitness</span>
+                    </div>
+                </div>
+                <div class="p-7">
+                    <h3 class="font-sans font-bold text-ink-900 text-lg mb-3">スポーツ用品</h3>
+                    <p class="text-sm text-ink-500 leading-relaxed">
+                        自宅で手軽に行えるフィットネス器具やストレッチマットから、
+                        日々のトレーニングを豊かにするスポーツギア、パフォーマンスを引き出すトレーニングサポートグッズ。
+                    </p>
+                </div>
+            </div>
+
+            <!-- Cat 4: アパレル -->
+            <div class="cat-card reveal reveal-delay-1 border border-ink-100">
+                <div class="relative h-60 overflow-hidden">
+                    <img src="https://images.unsplash.com/photo-1489987707025-afc232f7ea0f?auto=format&fit=crop&w=600&q=80"
+                         alt="アパレル"
+                         class="w-full h-full object-cover"
+                         onerror="this.src='https://images.unsplash.com/photo-1445205170230-053b830c6038?auto=format&fit=crop&w=600&q=80'">
+                    <div class="absolute inset-0 bg-gradient-to-t from-ink-900/50 to-transparent"></div>
+                    <div class="absolute top-4 left-4 bg-white/90 backdrop-blur-md px-3 py-1 rounded-full
+                                text-xs font-semibold text-ink-800 flex items-center gap-1.5">
+                        <i data-lucide="shirt" class="w-3.5 h-3.5 text-gold-600"></i>
+                        <span>Daily Apparel</span>
+                    </div>
+                </div>
+                <div class="p-7">
+                    <h3 class="font-sans font-bold text-ink-900 text-lg mb-3">アパレル・ファッション</h3>
+                    <p class="text-sm text-ink-500 leading-relaxed">
+                        「自然体でありのまま」を叶えるカジュアルウェアから、ルームウェア、
+                        快適な履き心地のフットウェアや、スタイルを引き立てるバッグなどの機能派ファッション小物。
+                    </p>
+                </div>
+            </div>
+
+            <!-- Cat 5: アウトドア -->
+            <div class="cat-card reveal reveal-delay-2 border border-ink-100">
+                <div class="relative h-60 overflow-hidden">
+                    <img src="https://images.unsplash.com/photo-1504280390367-361c6d9f38f4?auto=format&fit=crop&w=600&q=80"
+                         alt="アウトドア用品"
+                         class="w-full h-full object-cover"
+                         onerror="this.src='https://images.unsplash.com/photo-1523906834658-6e24ef2386f9?auto=format&fit=crop&w=600&q=80'">
+                    <div class="absolute inset-0 bg-gradient-to-t from-ink-900/50 to-transparent"></div>
+                    <div class="absolute top-4 left-4 bg-white/90 backdrop-blur-md px-3 py-1 rounded-full
+                                text-xs font-semibold text-ink-800 flex items-center gap-1.5">
+                        <i data-lucide="tent" class="w-3.5 h-3.5 text-gold-600"></i>
+                        <span>Outdoor Life</span>
+                    </div>
+                </div>
+                <div class="p-7">
+                    <h3 class="font-sans font-bold text-ink-900 text-lg mb-3">アウトドア用品</h3>
+                    <p class="text-sm text-ink-500 leading-relaxed">
+                        本格的なソロキャンプからファミリーキャンプまで対応するテント、
+                        高機能な寝袋やクーラーボックス、災害時にも役立つポータブルライトや多機能ツール。
+                    </p>
+                </div>
+            </div>
+
+            <!-- Cat 6: More -->
+            <div class="reveal reveal-delay-3 rounded-2xl overflow-hidden
+                        bg-gradient-to-br from-ink-900 via-ink-800 to-ink-900
+                        p-8 flex flex-col justify-between text-white
+                        border border-ink-700 min-h-[300px]
+                        hover:shadow-xl hover:shadow-ink-900/30 transition-all duration-400">
+                <div>
+                    <div class="w-12 h-12 rounded-xl bg-gold-500/20 flex items-center justify-center mb-6">
+                        <i data-lucide="layers" class="w-6 h-6 text-gold-400"></i>
+                    </div>
+                    <h3 class="font-serif font-light text-2xl sm:text-3xl leading-snug mb-4">
+                        新規お取引・<br>調達カテゴリーも<br>随時拡大中
+                    </h3>
+                    <p class="text-sm text-white/50 leading-relaxed">
+                        市場のニーズやトレンド変化に柔軟に対応するため、
+                        上記以外のカテゴリの商品調達や、新しい仕入ルートの開拓も積極的に推進しています。
+                    </p>
+                </div>
+                <div class="pt-6 border-t border-white/10">
+                    <span class="font-serif text-xs text-gold-400 tracking-widest uppercase">
+                        Lifestyle Innovator
+                    </span>
+                </div>
+            </div>
+
+        </div>
+    </div>
+</section>
+
+
+<!-- ============================================================
+     STRENGTHS
+============================================================ -->
+<section id="strengths" class="py-28 sm:py-36 bg-ink-50">
+    <div class="max-w-7xl mx-auto px-6">
+        <div class="grid grid-cols-1 lg:grid-cols-12 gap-16 lg:gap-24 items-center">
+
+            <!-- Left: Strengths List -->
+            <div class="lg:col-span-7 order-2 lg:order-1 space-y-6">
+                <span class="section-label reveal">03 / Strengths</span>
+                <h2 class="font-serif font-light text-4xl sm:text-5xl text-ink-900 leading-[1.2] mb-10 reveal reveal-delay-1">
+                    T shop online が提供する<br>
+                    <em class="not-italic text-gold-600">3つの価値</em>
+                </h2>
+
+                <!-- Strength 1 -->
+                <div class="strength-item reveal reveal-delay-2">
+                    <span class="strength-num">01</span>
+                    <h3 class="font-sans font-bold text-ink-900 text-base mb-2">
+                        安定した仕入・調達と多面的な販売ノウハウ
+                    </h3>
+                    <p class="text-sm text-ink-500 leading-relaxed">
+                        多岐にわたるジャンルのメーカー様・問屋様との深いパイプラインを活かし、
+                        適正価格かつ迅速な商品調達を実現しています。
+                        また、主要なECモールの販売特性を掴み、最適な形でお客様に製品を露出・販売します。
+                    </p>
+                </div>
+
+                <!-- Strength 2 -->
+                <div class="strength-item reveal reveal-delay-3">
+                    <span class="strength-num">02</span>
+                    <h3 class="font-sans font-bold text-ink-900 text-base mb-2">
+                        スピード配送と徹底した在庫・ロジスティクス管理
+                    </h3>
+                    <p class="text-sm text-ink-500 leading-relaxed">
+                        オンラインショッピングに求められる「欲しいときにすぐ届く」体験を提供するために、
+                        無駄のないオペレーションを構築。
+                        在庫の最適化とスムーズな出荷システムにより、購入者の信頼を最大限に高めています。
+                    </p>
+                </div>
+
+                <!-- Strength 3 -->
+                <div class="strength-item reveal reveal-delay-4">
+                    <span class="strength-num">03</span>
+                    <h3 class="font-sans font-bold text-ink-900 text-base mb-2">
+                        パートナーとしての誠実な運営とブランド保護
+                    </h3>
+                    <p class="text-sm text-ink-500 leading-relaxed">
+                        単に売り切るだけではなく、製品の市場評価を守り、
+                        適正な価格維持を尊重した責任ある販売を第一にしています。
+                        メーカー様のブランドイメージを傷つけることなく、
+                        末永いパートナーシップを構築することをお約束します。
+                    </p>
+                </div>
+            </div>
+
+            <!-- Right: Image -->
+            <div class="lg:col-span-5 order-1 lg:order-2 reveal">
+                <div class="relative rounded-3xl overflow-hidden shadow-2xl group">
+                    <img src="https://images.unsplash.com/photo-1454165804606-c3d57bc86b40?auto=format&fit=crop&w=800&q=80"
+                         alt="ロジスティクス・ビジネス運用イメージ"
+                         class="w-full h-[440px] object-cover transition-transform duration-700 group-hover:scale-105"
+                         onerror="this.src='https://images.unsplash.com/photo-1507537297725-24a1c029d3ca?auto=format&fit=crop&w=800&q=80'">
+                    <div class="absolute inset-0 bg-gradient-to-t from-ink-900/70 via-transparent to-transparent"></div>
+                    <div class="absolute bottom-8 left-8 right-8 text-white">
+                        <span class="font-serif text-xs tracking-widest text-gold-400 uppercase block mb-2">
+                            Our Operations
+                        </span>
+                        <h4 class="font-sans font-bold text-base leading-snug">
+                            取引先様の信頼に、万全の体制で応えます
+                        </h4>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+</section>
+
+
+<!-- ============================================================
+     PROFILE
+============================================================ -->
+<section id="profile" class="py-28 sm:py-36 bg-white">
+    <div class="max-w-4xl mx-auto px-6">
+
+        <!-- Header -->
+        <div class="text-center mb-16 reveal">
+            <span class="section-label justify-center mb-6">04 / Profile</span>
+            <h2 class="font-serif font-light text-4xl sm:text-5xl text-ink-900 mt-4 mb-6 leading-[1.2]">
+                事業者概要
+            </h2>
+            <div class="ornament">
+                <span class="w-1.5 h-1.5 rounded-full bg-gold-400 flex-shrink-0"></span>
+            </div>
+        </div>
+
+        <!-- Table -->
+        <div class="bg-ink-50 rounded-2xl border border-ink-100 px-8 sm:px-12 py-4 reveal reveal-delay-1">
+
+            <div class="profile-row">
+                <div class="flex items-center gap-2 text-ink-400 text-sm font-medium pt-1">
+                    <i data-lucide="bookmark" class="w-4 h-4 text-gold-500 flex-shrink-0"></i>
+                    <span>屋号</span>
+                </div>
+                <div class="font-sans font-bold text-ink-900 text-xl">T shop online</div>
+            </div>
+
+            <div class="profile-row">
+                <div class="flex items-center gap-2 text-ink-400 text-sm font-medium pt-1">
+                    <i data-lucide="user" class="w-4 h-4 text-gold-500 flex-shrink-0"></i>
+                    <span>代表者</span>
+                </div>
+                <div class="text-ink-900 font-medium">
+                    村山 知洋
+                    <span class="text-xs text-ink-400 ml-2 font-normal">Tomohiro Murayama</span>
+                </div>
+            </div>
+
+            <div class="profile-row">
+                <div class="flex items-center gap-2 text-ink-400 text-sm font-medium pt-1">
+                    <i data-lucide="map-pin" class="w-4 h-4 text-gold-500 flex-shrink-0"></i>
+                    <span>所在地</span>
+                </div>
+                <div class="text-ink-700 text-sm leading-relaxed">
+                    〒270-0023<br>千葉県松戸市八ケ崎
+                </div>
+            </div>
+
+            <div class="profile-row">
+                <div class="flex items-center gap-2 text-ink-400 text-sm font-medium pt-1">
+                    <i data-lucide="shopping-bag" class="w-4 h-4 text-gold-500 flex-shrink-0"></i>
+                    <span>事業内容</span>
+                </div>
+                <div class="text-ink-700 text-sm leading-relaxed space-y-1.5">
+                    <p>各種オンラインショップ（ECプラットフォーム）の企画・構築・運営</p>
+                    <p>雑貨、日用品、家庭便利グッズの販売</p>
+                    <p>おもちゃ、知育ホビー関連製品の販売</p>
+                    <p>スポーツ用品、フィットネス機器の販売</p>
+                    <p>メンズ・レディースアパレル、バッグ・靴等の販売</p>
+                    <p>アウトドア・キャンプ関連グッズの販売</p>
+                </div>
+            </div>
+
+            <div class="profile-row">
+                <div class="flex items-center gap-2 text-ink-400 text-sm font-medium pt-1">
+                    <i data-lucide="heart" class="w-4 h-4 text-gold-500 flex-shrink-0"></i>
+                    <span>事業理念</span>
+                </div>
+                <div class="text-ink-700 text-sm leading-relaxed">
+                    良質で信頼されるプロダクトを通じて、お客様の日々の生活に小さな感動と
+                    最高の利便性をもたらし、メーカー様や関係各所と共に安定した発展を目指すこと。
+                </div>
+            </div>
+
+        </div>
+    </div>
+</section>
+
+
+<!-- ============================================================
+     FOOTER
+============================================================ -->
+<footer class="bg-ink-900 text-white py-14 border-t border-ink-800">
+    <div class="max-w-7xl mx-auto px-6">
+        <div class="flex flex-col md:flex-row items-center justify-between gap-8">
+
+            <!-- Brand -->
+            <div class="flex items-center gap-3">
+                <div class="w-9 h-9 rounded-lg bg-gold-500 flex items-center justify-center">
+                    <span class="font-serif text-white font-semibold text-lg leading-none">T</span>
+                </div>
+                <div class="flex flex-col leading-none">
+                    <span class="font-sans font-semibold tracking-wider text-sm text-white">T shop online</span>
+                    <span class="font-serif text-[9px] text-ink-400 tracking-widest mt-0.5">
+                        Lifestyle &amp; Hobby Products Dealer
+                    </span>
+                </div>
+            </div>
+
+            <!-- Nav -->
+            <nav class="flex flex-wrap items-center justify-center gap-x-8 gap-y-2">
+                <a href="#concept"    class="text-xs text-ink-400 hover:text-gold-400 transition-colors tracking-wide">Concept</a>
+                <a href="#categories" class="text-xs text-ink-400 hover:text-gold-400 transition-colors tracking-wide">Categories</a>
+                <a href="#strengths"  class="text-xs text-ink-400 hover:text-gold-400 transition-colors tracking-wide">Strengths</a>
+                <a href="#profile"    class="text-xs text-ink-400 hover:text-gold-400 transition-colors tracking-wide">Profile</a>
+            </nav>
+
+            <!-- Copyright -->
+            <p class="font-serif text-xs text-ink-500 tracking-wide">
+                &copy; 2026 T shop online. All rights reserved.
+            </p>
+
+        </div>
+    </div>
+</footer>
+
+
+<!-- ============================================================
+     SCRIPTS
+============================================================ -->
+<script>
+    // --- Lucide Icons ---
+    lucide.createIcons();
+
+    // --- Mobile Menu ---
+    const mobileMenuBtn = document.getElementById('mobile-menu-btn');
+    const mobileMenu    = document.getElementById('mobile-menu');
+
+    mobileMenuBtn.addEventListener('click', () => {
+        const isOpen = mobileMenu.classList.contains('open');
+        mobileMenu.classList.toggle('open', !isOpen);
+        mobileMenuBtn.setAttribute('aria-expanded', String(!isOpen));
+    });
+
+    mobileMenu.querySelectorAll('a').forEach(link => {
+        link.addEventListener('click', () => {
+            mobileMenu.classList.remove('open');
+            mobileMenuBtn.setAttribute('aria-expanded', 'false');
+        });
+    });
+
+    // --- Sticky Header ---
+    const header = document.getElementById('main-header');
+    window.addEventListener('scroll', () => {
+        header.classList.toggle('scrolled', window.scrollY > 50);
+    }, { passive: true });
+
+    // --- Scroll Reveal ---
+    const revealObserver = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+            if (entry.isIntersecting) {
+                entry.target.classList.add('visible');
+                revealObserver.unobserve(entry.target);
+            }
+        });
+    }, { threshold: 0.12, rootMargin: '0px 0px -40px 0px' });
+
+    document.querySelectorAll('.reveal').forEach(el => revealObserver.observe(el));
+
+    // Immediately reveal elements already in viewport on load
+    window.addEventListener('load', () => {
+        document.querySelectorAll('.reveal').forEach(el => {
+            if (el.getBoundingClientRect().top < window.innerHeight) {
+                el.classList.add('visible');
+            }
+        });
+    });
+</script>
+
+</body>
+</html>
